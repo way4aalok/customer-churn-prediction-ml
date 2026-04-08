@@ -1,0 +1,44 @@
+Shape of dataset: (7043, 21)
+   customerID  gender  SeniorCitizen Partner Dependents  tenure  ...        Contract PaperlessBilling              PaymentMethod MonthlyCharges TotalCharges Churn
+0  7590-VHVEG  Female              0     Yes         No       1  ...  Month-to-month              Yes           Electronic check          29.85        29.85    No
+1  5575-GNVDE    Male              0      No         No      34  ...        One year               No               Mailed check          56.95       1889.5    No
+2  3668-QPYBK    Male              0      No         No       2  ...  Month-to-month              Yes               Mailed check          53.85       108.15   Yes
+3  7795-CFOCW    Male              0      No         No      45  ...        One year               No  Bank transfer (automatic)          42.30      1840.75    No
+4  9237-HQITU  Female              0      No         No       2  ...  Month-to-month              Yes           Electronic check          70.70       151.65   Yes
+
+[5 rows x 21 columns]
+
+After cleaning, dataset shape: (7032, 20)
+C:\Users\way4a\Desktop\customer prediction\churn_prediction.py:42: Pandas4Warning: For backward compatibility, 'str' dtypes are included by select_dtypes when 'object' dtype is specified. This behavior is deprecated and will be removed in a future version. Explicitly pass 'str' to `include` to select them, or to `exclude` to remove them and silence this warning.
+See https://pandas.pydata.org/docs/user_guide/migration-3-strings.html#string-migration-select-dtypes for details on how to write code that works with pandas 2 and 3.
+  for column in df.select_dtypes(include='object').columns:
+
+Categorical features encoded
+
+Feature scaling completed
+
+Data split into training and testing sets
+
+Logistic Regression Results
+Accuracy: 0.7853589196872779
+              precision    recall  f1-score   support
+
+           0       0.83      0.89      0.86      1033
+           1       0.62      0.49      0.55       374
+
+    accuracy                           0.79      1407
+   macro avg       0.73      0.69      0.70      1407
+weighted avg       0.77      0.79      0.78      1407
+
+
+Random Forest Results
+Accuracy: 0.7917555081734187
+              precision    recall  f1-score   support
+
+           0       0.83      0.90      0.86      1033
+           1       0.64      0.49      0.55       374
+
+    accuracy                           0.79      1407
+   macro avg       0.74      0.69      0.71      1407
+weighted avg       0.78      0.79      0.78      1407
+
