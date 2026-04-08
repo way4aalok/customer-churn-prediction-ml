@@ -1,14 +1,8 @@
-# ==========================================
-# Customer Churn Prediction Using ML
-# Author: Alok Mishra
-# ==========================================
-
 # Import required libraries
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
@@ -18,19 +12,19 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 # ------------------------------------------
 # Step 1: Load Dataset
 # ------------------------------------------
-df = pd.read_csv("telco_churn.csv")
+df = pd.read_csv("Telco_Cusomer_Churn.csv")  # Make sure file exists here
 
 print("Dataset Loaded Successfully")
 print("Shape of dataset:", df.shape)
 print(df.head())
 
-# ------------------------------------------
-# Step 2: Data Cleaning
-# ------------------------------------------
-
 # Drop customerID column if present
 if 'customerID' in df.columns:
     df.drop('customerID', axis=1, inplace=True)
+
+# Convert 'TotalCharges' to numeric, handling errors
+if 'TotalCharges' in df.columns:
+    df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
 
 # Replace blank spaces with NaN
 df.replace(" ", np.nan, inplace=True)
@@ -53,19 +47,22 @@ print("\nCategorical features encoded")
 # ------------------------------------------
 # Step 4: Feature Scaling
 # ------------------------------------------
+# Separate features and target before scaling
+X = df.drop('Churn', axis=1)
+y = df['Churn']
+
+# Scale only features, not target
 scaler = StandardScaler()
-df[df.columns] = scaler.fit_transform(df[df.columns])
+X_scaled = scaler.fit_transform(X)
+X_scaled = pd.DataFrame(X_scaled, columns=X.columns)
 
 print("\nFeature scaling completed")
 
 # ------------------------------------------
 # Step 5: Split Dataset
 # ------------------------------------------
-X = df.drop('Churn', axis=1)
-y = df['Churn']
-
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
+    X_scaled, y, test_size=0.2, random_state=42
 )
 
 print("\nData split into training and testing sets")
@@ -73,6 +70,9 @@ print("\nData split into training and testing sets")
 # ------------------------------------------
 # Step 6: Logistic Regression Model
 # ------------------------------------------
+y_train = y_train.astype(int)
+y_test = y_test.astype(int)
+
 lr_model = LogisticRegression(max_iter=1000)
 lr_model.fit(X_train, y_train)
 
@@ -89,6 +89,7 @@ rf_model = RandomForestClassifier(
     n_estimators=100,
     random_state=42
 )
+
 rf_model.fit(X_train, y_train)
 
 rf_predictions = rf_model.predict(X_test)
